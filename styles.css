@@ -1,0 +1,98 @@
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  color: #333;
+}
+
+.navbar {
+  width: 100%;
+  background-color: #007bff;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.navbar .nav-container {
+  display: flex;
+}
+.navbar .nav-container .nav-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: transparent;
+  color: #fff;
+  margin: 0 5px;
+}
+.navbar .nav-container .nav-button:hover {
+  background-color: #0062cc;
+}
+.navbar .nav-container .nav-button.active {
+  background-color: #0062cc;
+}
+
+.container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 350px;
+  text-align: center;
+}
+.container.hidden {
+  display: none;
+}
+.container h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.container .form-group {
+  margin-bottom: 15px;
+}
+.container .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.container .form-group input[type=text], .container .form-group input[type=number] {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+.container button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.container button:hover {
+  background-color: #0062cc;
+}
+.container #encrypt-results, .container #decrypt-results {
+  margin-top: 20px;
+}
+.container #encrypt-results h2, .container #decrypt-results h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.container #encrypt-results p, .container #decrypt-results p {
+  margin: 5px 0;
+  font-size: 14px;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #e9ecef;
+}/*# sourceMappingURL=styles.css.map */

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifrado con Curvas Elípticas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <button id="encrypt-tab" class="nav-button active">Cifrar</button>
+            <button id="decrypt-tab" class="nav-button">Descifrar</button>
+        </div>
+    </nav>
+    
+    <!-- Sección de Cifrado -->
+    <div class="container" id="encrypt-section">
+        <h1>Cifrar Mensaje</h1>
+        <div class="form-group">
+            <label for="plaintext">Texto a cifrar:</label>
+            <input type="text" id="plaintext" placeholder="Escriba su mensaje aquí">
+        </div>
+        <button id="encrypt-button">Cifrar Mensaje</button>
+        <div id="encrypt-results">
+            <h2>Resultado del Cifrado:</h2>
+            <p id="ciphertext">Texto cifrado: </p>
+        </div>
+    </div>
+    
+    <!-- Sección de Descifrado -->
+    <div class="container hidden" id="decrypt-section">
+        <h1>Descifrar Mensaje</h1>
+        <div class="form-group">
+            <label for="private-key">Clave privada del destinatario:</label>
+            <input type="number" id="private-key" placeholder="Ejemplo: 45">
+        </div>
+        <button id="decrypt-button">Descifrar Mensaje</button>
+        <div id="decrypt-results">
+            <h2>Resultado del Descifrado:</h2>
+            <p id="decrypted-message">Mensaje descifrado: </p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
