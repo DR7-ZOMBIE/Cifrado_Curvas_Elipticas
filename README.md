@@ -38,8 +38,9 @@ Para ejecutar este proyecto, necesitas conocimientos básicos de **JavaScript** 
 
 1. **Clona el repositorio:**
    ```bash
-   git clone https://github.com/tuusuario/elliptic-curve-cryptography.git
-   cd elliptic-curve-cryptography
+   git clone https://github.com/DR7-ZOMBIE/Cifrado_Curvas_Elipticas
+   cd Cifrado_Curvas_Elipticas
+   
 2. **Abre `index.html` en tu navegador web:**
 
    Simplemente abre el archivo `index.html` en tu navegador favorito para comenzar a usar la herramienta de cifrado y descifrado.
