@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cifrado con Curvas Elípticas</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Barra de navegación -->
@@ -14,35 +15,71 @@
             <button id="decrypt-tab" class="nav-button">Descifrar</button>
         </div>
     </nav>
-    
-    <!-- Sección de Cifrado -->
-    <div class="container" id="encrypt-section">
-        <h1>Cifrar Mensaje</h1>
-        <div class="form-group">
-            <label for="plaintext">Texto a cifrar:</label>
-            <input type="text" id="plaintext" placeholder="Escriba su mensaje aquí">
+
+    <!-- Contenedor principal con secciones ocultas -->
+    <div class="grid-container">
+        <!-- Sección de Cifrado -->
+        <div class="container" id="encrypt-section">
+            <h1>Cifrar Mensaje</h1>
+            <div class="form-group">
+                <label for="plaintext">Texto a cifrar:</label>
+                <input type="text" id="plaintext" placeholder="Escriba su mensaje aquí">
+            </div>
+            <button id="encrypt-button">Cifrar Mensaje</button>
+            <div id="encrypt-results">
+                <h2>Resultado del Cifrado:</h2>
+                <p id="ciphertext">Texto cifrado: </p>
+            </div>
         </div>
-        <button id="encrypt-button">Cifrar Mensaje</button>
-        <div id="encrypt-results">
-            <h2>Resultado del Cifrado:</h2>
-            <p id="ciphertext">Texto cifrado: </p>
+
+        <!-- Sección de Descifrado -->
+        <div class="container" id="decrypt-section" style="display: none;">
+            <h1>Descifrar Mensaje</h1>
+            <div class="form-group">
+                <label for="private-key">Clave privada del destinatario:</label>
+                <input type="number" id="private-key" placeholder="Ejemplo: 45">
+            </div>
+            <button id="decrypt-button">Descifrar Mensaje</button>
+            <div id="decrypt-results">
+                <h2>Resultado del Descifrado:</h2>
+                <p id="decrypted-message">Mensaje descifrado: </p>
+            </div>
         </div>
-    </div>
-    
-    <!-- Sección de Descifrado -->
-    <div class="container hidden" id="decrypt-section">
-        <h1>Descifrar Mensaje</h1>
-        <div class="form-group">
-            <label for="private-key">Clave privada del destinatario:</label>
-            <input type="number" id="private-key" placeholder="Ejemplo: 45">
-        </div>
-        <button id="decrypt-button">Descifrar Mensaje</button>
-        <div id="decrypt-results">
-            <h2>Resultado del Descifrado:</h2>
-            <p id="decrypted-message">Mensaje descifrado: </p>
+
+        <!-- Sección de Gráfico -->
+        <div class="container-graphic">
+            <h2>Gráfico de la Curva Elíptica</h2>
+            <canvas id="curve-chart" width="500" height="500"></canvas>
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Universidad Escuela de Ingeniería de Antioquia. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
+    <script>
+        // JavaScript para cambiar entre las secciones
+        const encryptTab = document.getElementById('encrypt-tab');
+        const decryptTab = document.getElementById('decrypt-tab');
+        const encryptSection = document.getElementById('encrypt-section');
+        const decryptSection = document.getElementById('decrypt-section');
+
+        encryptTab.addEventListener('click', () => {
+            encryptSection.style.display = 'block';
+            decryptSection.style.display = 'none';
+            encryptTab.classList.add('active');
+            decryptTab.classList.remove('active');
+        });
+
+        decryptTab.addEventListener('click', () => {
+            encryptSection.style.display = 'none';
+            decryptSection.style.display = 'block';
+            encryptTab.classList.remove('active');
+            decryptTab.classList.add('active');
+        });
+    </script>
 </body>
 </html>
