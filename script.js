@@ -1,5 +1,5 @@
 let ciphertext = [];
-
+let k_values = [];
 class EllipticCurve {
     constructor(a, b, p) {
         this.a = a;
@@ -114,8 +114,10 @@ function textToPoints(text) {
         const point = asciiToPoint.get(char);
         if (!point) {
             console.error(`No se encontró un punto válido para el carácter: ${char}`);
+            // Manejo de errores, por ejemplo, devolver un punto especial o lanzar un error.
+            return [null, null]; 
         }
-        return point || [null, null];
+        return point;
     });
 }
 
@@ -123,29 +125,66 @@ function textToPoints(text) {
 function pointsToText(points) {
     return points.map(point => {
         if (!point || point[0] === null) return '?';
-        return pointToAscii.get(point.toString()) || '?';
+        
+        const ascii_char = pointToAscii.get(point.toString());
+        if (!ascii_char) {
+            console.error(`No se pudo encontrar un mapeo para el punto: ${point}`);
+            // Manejo de errores, por ejemplo, devolver un carácter especial o lanzar un error.
+            return '?'; 
+        }
+        return ascii_char;
     }).join('');
 }
 
-// Funciones de cifrado y descifrado
+// Función de cifrado
 function encrypt(curve, public_key, plaintext_points) {
     return plaintext_points.map(point => {
         if (!point || point[0] === null) return [[null, null], [null, null]];
+
+        // Generamos k de forma segura dentro del campo modular p
         const k = Math.floor(Math.random() * (curve.p - 1)) + 1;
+        k_values.push(k);
+
+        // Cálculo de C1 y C2
         const C1 = curve.scalarMultiplication(k, G);
         const C2 = curve.pointAddition(point, curve.scalarMultiplication(k, public_key));
+
         return [C1, C2];
     });
 }
 
+// Función de descifrado
 function decrypt(curve, private_key, ciphertext) {
     return ciphertext.map(([C1, C2]) => {
         if (!C1 || !C2 || C1[0] === null || C2[0] === null) return [null, null];
+
+        // Cálculo del punto secreto S usando la clave privada y C1
         const S = curve.scalarMultiplication(private_key, C1);
+
+        // Invertir la coordenada y de S (inverso aditivo en la curva)
         const S_neg = [S[0], (-S[1] + curve.p) % curve.p];
-        return curve.pointAddition(C2, S_neg);
+
+
+        // Sumar C2 y el inverso de S para recuperar el punto original
+        const original_point = curve.pointAddition(C2, S_neg);
+
+        // Verificar si el punto original está en la curva
+        if (!curve.isOnCurve(original_point[0], original_point[1])) {
+            console.error(`El punto ${original_point} no está en la curva.`);
+            return [null, null];
+        }
+
+        console.log("C1: ", C1);
+        console.log("C2: ", C2);
+        console.log("S: ", S);
+        console.log("S_neg: ", S_neg);
+        console.log("Original point: ", original_point);
+
+
+        return original_point;
     });
 }
+
 
 // Gráfica de la curva elíptica completa y los puntos de cifrado
 let chart;
@@ -164,31 +203,54 @@ function plotEllipticCurve(points) {
         }
     }
 
+    // Datos para los puntos de cifrado
+    const encryptionPointsData = points.map(point => ({ x: point[0], y: point[1] }));
+
     chart = new Chart(ctx, {
         type: 'scatter',
         data: {
             datasets: [{
                 label: 'Curva Elíptica',
                 data: curvePoints,
-                pointRadius: 3,
-                backgroundColor: 'rgba(0, 123, 255, 0.3)',
+                pointRadius: 2,
+                backgroundColor: 'rgba(0, 123, 255, 0.5)',
                 showLine: false
             }, {
                 label: 'Puntos de Cifrado',
-                data: points.map(point => ({ x: point[0], y: point[1] })),
+                data: encryptionPointsData,
                 pointRadius: 5,
                 backgroundColor: 'rgba(255, 99, 132, 0.8)',
-                showLine: false
+                showLine: true,
+                borderColor: 'rgba(255, 99, 132, 0.8)',
+                borderDash: [5, 5]  // Opcional: estilo de línea punteada
             }]
         },
         options: {
             scales: {
                 x: { title: { display: true, text: 'X' }, min: 0, max: p },
                 y: { title: { display: true, text: 'Y' }, min: 0, max: p }
+            },
+            elements: {
+                line: {
+                    tension: 0.4  // Curvas suaves
+                }
+            },
+            animation: {
+                duration: 2000, // Duración de la animación en milisegundos
             }
         }
     });
+
+    // Función para reiniciar la animación de manera continua
+    function animate() {
+        requestAnimationFrame(animate);
+        chart.update();  // Actualiza el gráfico para cada cuadro
+    }
+
+    animate(); // Inicia la animación
 }
+
+
 
 // Funciones para cambiar entre las pestañas de cifrado y descifrado
 document.getElementById('encrypt-tab').addEventListener('click', () => {
